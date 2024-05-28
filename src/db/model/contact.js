@@ -1,11 +1,3 @@
-// name - string, required
-// phoneNumber - string, required
-// email - email, optional
-// isFavourite - boolean, default false
-// contactType - string, enum(’work’, ‘home’, ‘personal’), required, default ‘personal’
-// createdAt - дата створення
-// updatedAt - дата оновлення timestamps: true
-
 import { Schema, model } from "mongoose";
 
 const contactSchema = new Schema({
@@ -13,7 +5,7 @@ const contactSchema = new Schema({
     phoneNumber: { type: String, required: true, },
     email: {type: String, required: false, },
     isFavourite: { type: Boolean, default: false, },
-    contactType: {type: String, enum: ['work', 'home', 'personal'], required: true, default: 'personal', }
+    contactType: {type: String, required: true, default: 'personal', enum: ['work', 'home', 'personal'], }
 }, {
     timestamps: true,
 });

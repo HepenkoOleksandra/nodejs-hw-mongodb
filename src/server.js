@@ -21,16 +21,9 @@ export const setupServer = () => {
 
     app.use(cors());
 
-    app.use((req, res, next) => {
-        console.log(`Time: ${new Date().toLocaleString()}`);
-        next();
-    });
-
-    // app.get('/', (req, res) => {
-    // res.send('Hello world');
-    //     res.json({
-    //         message: 'Hello world!'
-    //     });
+    // app.use((req, res, next) => {
+    //     console.log(`Time: ${new Date().toLocaleString()}`);
+    //     next();
     // });
 
     app.get('/contacts', async (req, res) => {
