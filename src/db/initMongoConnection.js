@@ -7,9 +7,9 @@ export const initMongoConnection = async () => {
 
     try {
         await mongoose.connect(connectionLink);
-        console.log("Mongo_DB start");
+        console.log("Mongo connection successfully established!");
     } catch (error) {
-        console.log(error);
+        console.log("Error while setting up mongo connection", error);
         throw error;
     }
 };
