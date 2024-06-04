@@ -1,3 +1,4 @@
+import createHttpError from "http-errors";
 import { Contact } from "../db/model/contact.js";
 
 export const getAllContacts = async () => {
@@ -13,13 +14,26 @@ export const createContact = async (payload) => {
     return contact;
 };
 
-export const upsertContact = async (id, payload) => {
-    const contact = await Contact.findByIdAndUpdate(id, payload, {new: true});
-    return contact;
+export const upsertContact = async (id, payload, options = {}) => {
+    const rawResult = await Contact.findByIdAndUpdate(id, payload, {
+        new: true,
+        includeResultMetadata: true,
+        ...options
+    });
+
+    if (!rawResult || !rawResult.value) {
+        throw createHttpError(404, 'Contact not found');
+        // return null;
+    };
+
+    return {
+        contact: rawResult.value,
+        isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+    };
 };
 
 export const deleteContact = async (id) => {
-    await Contact.findOneAndDelete({
-        _id: id,
-    });
+    const contact = await Contact.findByIdAndDelete(id);
+
+    return contact;
 };
