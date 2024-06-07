@@ -1,11 +1,17 @@
-//  name: { type: String, required: true, },
-//     phoneNumber: { type: String, required: true, },
-//     email: {type: String, required: false, },
-//     isFavourite: { type: Boolean, default: false, },
-//     contactType: {type: String, required: true, default: 'personal', enum: ['work', 'home', 'personal'], }
 import Joi from 'joi';
 
 export const createContactSchema = Joi.object({
-    
+    name: Joi.string().required().min(3).max(30),
+    phoneNumber: Joi.number().integer().required().positive(),
+    email: Joi.string().email(),
+    isFavourite: Joi.boolean().default(false),
+    contactType: Joi.string().required().valid('work', 'home', 'personal').default('personal'),
 });
 
+export const updateContactSchema = Joi.object({
+    name: Joi.string().min(3).max(30),
+    phoneNumber: Joi.number().integer().positive(),
+    email: Joi.string().email(),
+    isFavourite: Joi.boolean().default(false),
+    contactType: Joi.string().valid('work', 'home', 'personal').default('personal'),
+});
