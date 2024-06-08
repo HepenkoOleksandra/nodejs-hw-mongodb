@@ -1,8 +1,33 @@
 import createHttpError from "http-errors";
 import { Contact } from "../db/model/contact.js";
 
-export const getAllContacts = async () => {
-    return await Contact.find({});
+const calculatePaginationData = (page, perPage, count) => {
+    const totalPages = Math.ceil(count / perPage);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+
+    return {
+        page,
+        perPage,
+        totalItems: count,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
+    };
+};
+
+export const getAllContacts = async ({page = 1, perPage = 10}) => {
+    const skip = perPage * (page - 1);
+    const [contacts, countContacts] = await Promise.all([
+        Contact.find({}).skip(skip).limit(perPage),
+        Contact.find({}).countDocuments()]);
+
+    const paginationInformation = calculatePaginationData(page, perPage, countContacts);
+
+    return {
+        contacts,
+        ...paginationInformation,
+    };
 };
 
 export const getContactById = async (id) => {
