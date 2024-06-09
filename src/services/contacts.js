@@ -1,5 +1,6 @@
 import createHttpError from "http-errors";
 import { Contact } from "../db/model/contact.js";
+import { SORT_ORDER } from "../constants/index.js";
 
 const calculatePaginationData = (page, perPage, count) => {
     const totalPages = Math.ceil(count / perPage);
@@ -16,16 +17,16 @@ const calculatePaginationData = (page, perPage, count) => {
     };
 };
 
-export const getAllContacts = async ({page = 1, perPage = 10}) => {
+export const getAllContacts = async ({page = 1, perPage = 10, sortBy = '_id', sortOrder = SORT_ORDER.ASC}) => {
     const skip = perPage * (page - 1);
     const [contacts, countContacts] = await Promise.all([
-        Contact.find({}).skip(skip).limit(perPage),
+        Contact.find({}).skip(skip).limit(perPage).sort({[sortBy]: sortOrder}),
         Contact.find({}).countDocuments()]);
 
     const paginationInformation = calculatePaginationData(page, perPage, countContacts);
 
     return {
-        contacts,
+        data: contacts,
         ...paginationInformation,
     };
 };
