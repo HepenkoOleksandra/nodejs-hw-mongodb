@@ -1,13 +1,13 @@
-const parseContactType = (contactType) => {
-    const isString = typeof contactType === 'string';
+const parseContactType = (type) => {
+    const isString = typeof type === 'string';
 
     if (!isString) return;
 
-    const isContactType = ['work', 'home', 'personal'].includes(contactType);
+    const isContactType = ['work', 'home', 'personal'].includes(type);
 
     if (!isContactType) return;
 
-    return contactType;
+    return type;
 };
 
 const parseBoolean = (bool) => {
@@ -23,13 +23,13 @@ const parseBoolean = (bool) => {
 };
 
 export const parseFilterParams = (query) => {
-    const { isFavourite, contactType } = query;
+    const { isFavourite, type } = query;
 
     const parsedIsFavourite = parseBoolean(isFavourite);
-    const parsedContactType = parseContactType(contactType);
+    const parsedContactType = parseContactType(type);
 
     return {
         isFavourite: parsedIsFavourite,
-        contactType: parsedContactType,
+        type: parsedContactType,
     };
 };
