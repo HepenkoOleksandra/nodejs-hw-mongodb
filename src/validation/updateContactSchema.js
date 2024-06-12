@@ -6,18 +6,16 @@ export const updateContactSchema = Joi.object({
         'string.min': 'Name must be at least {#limit} characters long',
         'string.max': 'Name must be at most {#limit} characters long',
     }),
-    phoneNumber: Joi.number().integer().positive().message({
-        'number.base': 'PhoneNumber must be a number',
-        'number.integer': 'PhoneNumber must be an integer',
-        'number.positive': 'PhoneNumber must be a positive number',
+    phoneNumber: Joi.string().min(3).max(20).message({
+        'string.base': 'PhoneNumber must be a string',
+        'string.min': 'PhoneNumber must be at least {#limit} characters long',
+        'string.max': 'PhoneNumber must be at most {#limit} characters long',
     }),
     email: Joi.string().email().message({
         'string.base': 'Email must be a string',
-        'string.email': 'Please enter a valid email address',
+        'string.min': 'Email must be at least {#limit} characters long',
+        'string.max': 'Email must be at most {#limit} characters long',
     }),
     isFavourite: Joi.boolean(),
-        // 'boolean.base': 'isFavourite must be a boolean',
     contactType: Joi.string().valid('work', 'home', 'personal'),
-        // 'string.base': 'ContactType must be a string',
-        // 'string.valid': 'Invalid contactType. Allowed values: work, home, personal',
 });
