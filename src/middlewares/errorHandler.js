@@ -8,7 +8,8 @@ export const errorHandler = (error, req, res, next) => {
             message: error.message,
             data: {
                 message: error.message,
-            }
+            },
+            errors: error.errors || [],
         });
         return;
      };
