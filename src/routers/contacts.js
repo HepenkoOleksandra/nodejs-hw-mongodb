@@ -9,18 +9,18 @@ import { updateContactSchema } from "../validation/updateContactSchema.js";
 
 const contactsRouter = Router();
 
-// contactsRouter.use('/contacts/:contactId', validateMongoId('contactId'));
+// contactsRouter.use('/:contactId', validateMongoId('contactId'));
 
-contactsRouter.get('/contacts', ctrlWrapper(getContactsController));
+contactsRouter.get('/', ctrlWrapper(getContactsController));
 
-contactsRouter.get('/contacts/:contactId', validateMongoId('contactId'), ctrlWrapper(getContactByIdController));
+contactsRouter.get('/:contactId', validateMongoId('contactId'), ctrlWrapper(getContactByIdController));
 
-contactsRouter.post('/contacts', validateBody(createContactSchema), ctrlWrapper(createContactController));
+contactsRouter.post('/', validateBody(createContactSchema), ctrlWrapper(createContactController));
 
-contactsRouter.patch('/contacts/:contactId', validateBody(updateContactSchema), validateMongoId('contactId'), ctrlWrapper(patchContactByIdController));
+contactsRouter.patch('/:contactId', validateBody(updateContactSchema), validateMongoId('contactId'), ctrlWrapper(patchContactByIdController));
 
-contactsRouter.put('/contacts/:contactId', validateBody(createContactSchema), validateMongoId('contactId'), ctrlWrapper(putContactByIdController));
+contactsRouter.put('/:contactId', validateBody(createContactSchema), validateMongoId('contactId'), ctrlWrapper(putContactByIdController));
 
-contactsRouter.delete('/contacts/:contactId', validateMongoId('contactId'), ctrlWrapper(deleteContactByIdController));
+contactsRouter.delete('/:contactId', validateMongoId('contactId'), ctrlWrapper(deleteContactByIdController));
 
 export default contactsRouter;

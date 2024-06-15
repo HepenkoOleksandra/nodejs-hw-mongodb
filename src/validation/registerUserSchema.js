@@ -14,10 +14,11 @@ export const registerUserSchema = Joi.object({
         'string.email': 'Please enter a valid email address',
         'any.required': 'Email is required',
     }),
-    password: Joi.string().required().message({
-        'string.base': 'Password must be a string',
-        'any.required': 'Password is required',
-    }),
+    password: Joi.string().required(),
+    //     message({
+    //     'string.base': 'Password must be a string',
+    //     'any.required': 'Password is required',
+    // }),
 });
 
 

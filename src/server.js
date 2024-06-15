@@ -5,9 +5,7 @@ import { env } from './utils/env.js';
 import { ENV_VARS } from './constants/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-import contactsRouter from './routers/contacts.js';
-// import { getAllContacts, getContactById } from './services/contacts.js';
-
+import rootRouter from './routers/index.js';
 
 const PORT = Number(env(ENV_VARS.PORT, 3000));
 
@@ -24,7 +22,7 @@ export const setupServer = () => {
 
     app.use(express.json());
 
-    app.use(contactsRouter);
+    app.use(rootRouter);
 
     app.use('*', notFoundHandler);
 
