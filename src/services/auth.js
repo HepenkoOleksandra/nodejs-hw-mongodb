@@ -3,7 +3,7 @@ import { User } from "../db/model/user.js";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Session } from "../db/model/session.js";
-import { FIFTEEN_MINUTES, ONE_DAY } from "../constants/index.js";
+import { FIFTEEN_MINUTES, THIRTY_DAY } from "../constants/index.js";
 
 export const registerUser = async (payload) => {
     const isUser = await User.findOne({ email: payload.email });
@@ -41,7 +41,7 @@ export const loginUser = async (payload) => {
         accessToken,
         refreshToken,
         accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-        refreshTokenValidUntil: new Date(Date.now() + ONE_DAY)
+        refreshTokenValidUntil: new Date(Date.now() + THIRTY_DAY)
     });
 
     return session;
@@ -61,7 +61,7 @@ export const refreshUserSession = async ({ sessionId, sessionToken }) => {
         throw createHttpError(401, 'Session not found');
     }
 
-    const isSessionTokenExpired = new Date > new Date(session.refreshTokenValidUntil);
+    const isSessionTokenExpired = new Date > session.refreshTokenValidUntil;
 
     if (isSessionTokenExpired) {
         throw createHttpError(401, 'Session token expired');
@@ -77,7 +77,7 @@ export const refreshUserSession = async ({ sessionId, sessionToken }) => {
         accessToken,
         refreshToken,
         accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-        refreshTokenValidUntil: new Date(Date.now() + ONE_DAY)
+        refreshTokenValidUntil: new Date(Date.now() + THIRTY_DAY)
     });
 
     return newSession;

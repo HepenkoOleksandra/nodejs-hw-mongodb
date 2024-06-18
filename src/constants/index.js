@@ -11,6 +11,7 @@ export const SORT_ORDER = {
     DESC: 'desc',
 };
 
-export const ONE_DAY = 1000 * 60 * 60 * 24;
+export const THIRTY_DAY = 1000 * 60 * 60 * 24 * 30;
 
 export const FIFTEEN_MINUTES = 1000 * 60 * 15;
+

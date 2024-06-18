@@ -13,6 +13,6 @@ authRouter.post('/login', validateBody(loginUserSchema), ctrlWrapper(loginUserCo
 
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
-authRouter.post('/refresh-token', ctrlWrapper(refreshUserSessionController));
+authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
 export default authRouter;
