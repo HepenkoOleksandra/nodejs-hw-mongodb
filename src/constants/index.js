@@ -10,3 +10,8 @@ export const SORT_ORDER = {
     ASC: 'asc',
     DESC: 'desc',
 };
+
+export const THIRTY_DAY = 1000 * 60 * 60 * 24 * 30;
+
+export const FIFTEEN_MINUTES = 1000 * 60 * 15;
+
