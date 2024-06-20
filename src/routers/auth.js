@@ -15,4 +15,8 @@ authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
 authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
+authRouter.post('/send-reset-email', ctrlWrapper());
+
+authRouter.post('/reset-password', ctrlWrapper());
+
 export default authRouter;
