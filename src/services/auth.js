@@ -4,9 +4,12 @@ import { User } from "../db/model/user.js";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Session } from "../db/model/session.js";
-import { ENV_VARS, FIFTEEN_MINUTES, THIRTY_DAY } from "../constants/index.js";
+import { ENV_VARS, FIFTEEN_MINUTES, TEMPLATES_DIR, THIRTY_DAY } from "../constants/index.js";
 import { env } from "../utils/env.js";
 import { sendMail } from "../utils/sendMail.js";
+import path from "node:path";
+import fs from 'node:fs/promises';
+import handlebars from 'handlebars';
 
 export const registerUser = async (payload) => {
     const isUser = await User.findOne({ email: payload.email });
@@ -102,13 +105,31 @@ export const sendResetEmail = async(email) => {
         { expiresIn: '5m', },
     );
 
-    await sendMail({
-        html: `<h1>Hello ${user.name}</h1>
-        <p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+    const resetPasswordTemplatePath = path.join(TEMPLATES_DIR, 'sendResetEmail.html',);
+
+    const templateSource = (
+        await fs.readFile(resetPasswordTemplatePath)
+    ).toString();
+
+    const template = handlebars.compile(templateSource);
+
+    const html = template({
+        name: user.name,
+        link: `${env(ENV_VARS.APP_DOMAIN)}/reset-password?token=${resetToken}`,
+    });
+
+    try {
+         await sendMail({
+        html,
         to: email,
         subject: "Reset your password",
         from: env(ENV_VARS.SMTP_FROM),
     });
+    } catch (error) {
+        console.log(error);
+        throw createHttpError(500, 'Failed to send the email, please try again later.');
+    }
+
 };
 
 
