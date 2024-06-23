@@ -132,4 +132,26 @@ export const sendResetEmail = async(email) => {
 
 };
 
+export const resetPassword = async (token, password) => {
+    let tokenPayload;
 
+    try {
+       tokenPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET));
+    } catch (error) {
+        throw createHttpError(401, error.message);
+    }
+
+
+    const user = await User.findOne({
+        _id: tokenPayload.sub,
+        email: tokenPayload.email,
+    });
+
+    if (!user) {
+        throw createHttpError(404, "User not found");
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    await User.updateOne({ _id: user._id }, { password: hashPassword });
+};
