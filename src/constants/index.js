@@ -25,3 +25,6 @@ export const THIRTY_DAY = 1000 * 60 * 60 * 24 * 30;
 export const FIFTEEN_MINUTES = 1000 * 60 * 15;
 
 export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
+
+export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');

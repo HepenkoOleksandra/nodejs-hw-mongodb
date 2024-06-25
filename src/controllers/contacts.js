@@ -51,6 +51,7 @@ export const patchContactByIdController = async (req, res, next) => {
     const contactId = req.params.contactId;
     const body = req.body;
     const userId = req.user._id;
+    const photo = req.file;
     const {contact} = await upsertContact(contactId, userId, body);
 
     if (!contact) {
