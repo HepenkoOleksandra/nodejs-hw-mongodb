@@ -11,5 +11,5 @@ export const saveFileToUploadDir = async (file) => {
     // await fs.writeFile(newPath, content);
     // await fs.unlink(file.path);
 
-    return `${env(ENV_VARS)}/uploads/${file.filename}`;
+    return `${env(ENV_VARS.APP_DOMAIN)}/uploads/${file.filename}`;
 };
