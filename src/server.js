@@ -21,11 +21,11 @@ export const setupServer = () => {
 
     app.use(cors());
 
-    app.use('/uploads', express.static(UPLOAD_DIR));
-
     app.use(cookieParser());
 
     app.use(express.json());
+
+    app.use('/uploads', express.static(UPLOAD_DIR));
 
     app.use(rootRouter);
 

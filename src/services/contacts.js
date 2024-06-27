@@ -1,6 +1,10 @@
 import createHttpError from "http-errors";
 import { Contact } from "../db/model/contact.js";
-import { SORT_ORDER } from "../constants/index.js";
+import { ENV_VARS, SORT_ORDER } from "../constants/index.js";
+// import { saveFile } from "../utils/saveFile.js";
+import { env } from "../utils/env.js";
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
 
 const calculatePaginationData = (page, perPage, count) => {
     const totalPages = Math.ceil(count / perPage);
@@ -54,17 +58,45 @@ export const getContactById = async (contactId, userId) => {
     return await Contact.findOne({_id: contactId, userId});
 };
 
-export const createContact = async (payload, userId) => {
+export const createContact = async ({photo, ...payload}, userId) => {
+    // const photoUrl = await saveFile(photo);
+
+    if (!photo) return;
+
+    let photoUrl;
+
+    if (photo) {
+        if (env(ENV_VARS.ENABLE_CLOUDINARY) === 'true') {
+            photoUrl = await saveFileToCloudinary(photo);
+        } else {
+            photoUrl = await saveFileToUploadDir(photo);
+        }
+    }
+
     const contact = await Contact.create({
         ...payload,
-        userId: userId
+        userId: userId,
+        photo: photoUrl,
     });
 
     return contact;
 };
 
-export const upsertContact = async (contactId, userId, payload, options = {}) => {
-    const rawResult = await Contact.findOneAndUpdate({_id: contactId, userId}, payload, {
+export const upsertContact = async (contactId, userId, {photo, ...payload}, options = {}) => {
+    // const photoUrl = await saveFile(photo);
+    if (!photo) return;
+
+    let photoUrl;
+
+    if (photo) {
+        if (env(ENV_VARS.ENABLE_CLOUDINARY) === 'true') {
+            photoUrl = await saveFileToCloudinary(photo);
+        } else {
+            photoUrl = await saveFileToUploadDir(photo);
+        }
+    }
+
+    const rawResult = await Contact.findOneAndUpdate({ _id: contactId, userId }, {...payload, photo: photoUrl}, {
         new: true,
         includeResultMetadata: true,
         ...options

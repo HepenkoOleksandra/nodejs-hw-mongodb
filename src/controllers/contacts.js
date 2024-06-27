@@ -3,10 +3,7 @@ import createHttpError from "http-errors";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
 import { parseFilterParams } from "../utils/parseFilterParams.js";
-import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
-import { env } from "../utils/env.js";
-import { ENV_VARS } from "../constants/index.js";
-import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+// import { saveFile } from "../utils/saveFile.js";
 
 export const getContactsController = async (req, res,) => {
     const { page, perPage } = parsePaginationParams(req.query);
@@ -42,7 +39,9 @@ export const getContactByIdController = async (req, res, next) => {
 export const createContactController = async (req, res) => {
     const userId = req.user._id;
     const body = req.body;
-    const contact = await createContact(body, userId);
+    const photo = req.file;
+
+    const contact = await createContact({...body, photo: photo}, userId);
 
     res.status(201).json({
         status: 201,
@@ -58,16 +57,9 @@ export const patchContactByIdController = async (req, res, next) => {
     const body = req.body;
     // const { body, photo } = req;
 
-    let photoUrl;
+    // const photoUrl = await saveFile(photo);
 
-    if (photo) {
-        if (env(ENV_VARS.ENABLE_CLOUDINARY) === 'true') {
-            photoUrl = await saveFileToCloudinary(photo);
-        } else {
-            photoUrl = await saveFileToUploadDir(photo);
-      }
-    }
-    const {contact} = await upsertContact(contactId, userId, {...body, photo: photoUrl,});
+    const {contact} = await upsertContact(contactId, userId, {...body, photo: photo,});
 
     if (!contact) {
         next(createHttpError(404, 'Contact not found'));
@@ -84,8 +76,12 @@ export const patchContactByIdController = async (req, res, next) => {
 export const putContactByIdController = async (req, res, next) => {
     const contactId = req.params.contactId;
     const body = req.body;
+    const photo = req.file;
     const userId = req.user._id;
-    const {isNew, contact} = await upsertContact(contactId, userId, body, {upsert: true});
+
+    // const photoUrl = await saveFile(photo);
+
+    const {isNew, contact} = await upsertContact(contactId, userId, {...body, photo: photo}, {upsert: true});
 
     if (!contact) {
         next(createHttpError(404, 'Contact not found'));
