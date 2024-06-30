@@ -1,5 +1,5 @@
 import { THIRTY_DAY } from "../constants/index.js";
-import { loginUser, logoutUser, refreshUserSession, registerUser, resetPassword, sendResetEmail } from "../services/auth.js";
+import { loginOrSignupWithGoogle, loginUser, logoutUser, refreshUserSession, registerUser, resetPassword, sendResetEmail } from "../services/auth.js";
 import { generateOAuthUrl } from "../utils/googleOAuth.js";
 
 export const registerUserController = async (req, res) => {
@@ -101,4 +101,27 @@ export const generateOAuthUrlController = async (req, res) => {
             url,
         }
     });
+};
+
+export const verifyGoogleOAuthController = async (req, res) => {
+    const code = req.body.code;
+
+    const session = loginOrSignupWithGoogle(code);
+
+    res.cookie('sessionId', session._id, {
+        httpOnly: true,
+        expires: new Date(Date.now() + THIRTY_DAY),
+    });
+
+    res.cookie('sessionToken', session.refreshToken, {
+        httpOnly: true,
+        expires: new Date(Date.now() + THIRTY_DAY),
+    });
+
+    res.json({
+        status: 200,
+        message: 'Successfully logged in via Google OAuth!',
+        data: {accessToken: session.accessToken},
+    });
+
 };
