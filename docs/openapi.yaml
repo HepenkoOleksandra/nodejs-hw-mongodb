@@ -13,8 +13,8 @@ tags:
   - name: Auth
     description: Authorization operations
 servers:
-  - url: <http://localhost:3000>
-  - url: <https://contacts-app-x5ll.onrender.com/>
+  - url: http://localhost:3000
+  - url: https://contacts-app-x5ll.onrender.com
 paths:
   /contacts/{contactId}:
     get:
@@ -22,9 +22,12 @@ paths:
   # /contacts:
   #   get:
   #     $ref: ../swagger/paths/students/{id}/get.yaml
-  # /contacts:
-  #   post:
-  #     $ref: ../swagger/paths/students/{id}/get.yaml
+  /contacts:
+    post:
+      $ref: ../swagger/paths/contacts/post.yaml
+  /contacts/{contactId}:
+    delete:
+      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
 components:
   securitySchemes:
     bearerAuth:
