@@ -19,15 +19,14 @@ paths:
   /contacts/{contactId}:
     get:
       $ref: ../swagger/paths/contacts/{contactId}/get.yaml
+    delete:
+      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
   # /contacts:
   #   get:
   #     $ref: ../swagger/paths/students/{id}/get.yaml
   /contacts:
     post:
       $ref: ../swagger/paths/contacts/post.yaml
-  /contacts/{contactId}:
-    delete:
-      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
 components:
   securitySchemes:
     bearerAuth:
