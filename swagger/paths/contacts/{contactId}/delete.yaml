@@ -1,6 +1,6 @@
 tags:
   - Contacts
-summary: Delete contact
+summary: Delete contact by id
 operationId: deleteContact
 description: 'Delete a contact by id'
 security:
@@ -18,4 +18,4 @@ responses:
   '404':
     description: Contact not found
   '401':
-    $ref: '../../components/responses/401.yaml'
+    $ref: ..\..\..\components\responses\401.yaml

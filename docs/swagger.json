@@ -86,6 +86,41 @@
             "$ref": "#/components/responses/401"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Delete contact",
+        "operationId": "deleteContact",
+        "description": "Delete a contact by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contactId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful response, contact deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "description": "Contact not found"
+          }
+        }
       }
     },
     "/contacts": {
