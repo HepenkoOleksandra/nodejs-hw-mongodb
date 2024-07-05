@@ -10,16 +10,19 @@ parameters:
     name: page
     schema:
       type: integer
-    example: 1
+      default: 1
+      example: 1
   - in: query
     name: perPage
     schema:
       type: integer
+      default: 10
       example: 10
   - in: query
     name: sortBy
     schema:
       type: string
+      default: _id
       example: 'contactType'
     description: "All contacts's fields can be mentioned. Default value - _id"
   - in: query
@@ -91,4 +94,4 @@ responses:
                   type: boolean
                   example: true
   '401':
-    $ref: '../../components/responses/401.yaml'
+    $ref: '..\..\components\responses\401.yaml'
